@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220412033258_InitialMigration")]
+    [Migration("20220412040452_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,10 +83,7 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Admin.User", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("id")
-                        .HasComment("идентификатор");
+                    b.HasBaseType("Domain.Entities.Admin.Entity");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -112,22 +109,11 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnName("c_password")
                         .HasComment("пароль");
 
-                    b.Property<Guid>("TypeId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("f_type")
-                        .HasComment("тип сущности");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("c_username")
                         .HasComment("имя пользователя");
-
-                    b.HasKey("Id")
-                        .HasName("pk_cd_users");
-
-                    b.HasIndex("Id", "TypeId")
-                        .HasDatabaseName("ix_cd_users_id_f_type");
 
                     b.ToTable("cd_users", "admin");
 

@@ -43,7 +43,8 @@ CREATE TABLE admin.cd_users (
     c_lastname text NOT NULL,
     c_firstname text NOT NULL,
     c_middlename text NOT NULL,
-    CONSTRAINT pk_cd_users PRIMARY KEY (id),
+    CONSTRAINT pk_cd_entities PRIMARY KEY (id, f_type),
+    CONSTRAINT fk_cd_entities_cs_entity_types_f_type FOREIGN KEY (f_type) REFERENCES admin.cs_entity_types (id) ON DELETE CASCADE,
     CONSTRAINT fk_cd_users_cd_entities_entityid_entitytypeid FOREIGN KEY (id, f_type) REFERENCES admin.cd_entities (id, f_type) ON DELETE CASCADE
 );
 COMMENT ON TABLE admin.cd_users IS 'пользователи';
@@ -57,10 +58,10 @@ COMMENT ON COLUMN admin.cd_users.c_middlename IS 'отчество';
 
 CREATE INDEX ix_cd_entities_f_type ON admin.cd_entities (f_type);
 
-CREATE INDEX ix_cd_users_id_f_type ON admin.cd_users (id, f_type);
+CREATE INDEX ix_cd_entities_f_type ON admin.cd_users (f_type);
 
 INSERT INTO "__EFMigrationsHistory" (migrationid, productversion)
-VALUES ('20220412033258_InitialMigration', '6.0.3');
+VALUES ('20220412040452_InitialMigration', '6.0.3');
 
 COMMIT;
 

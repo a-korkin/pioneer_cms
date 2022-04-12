@@ -64,7 +64,14 @@ namespace Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_cd_users", x => x.id);
+                    table.PrimaryKey("pk_cd_entities", x => new { x.id, x.f_type });
+                    table.ForeignKey(
+                        name: "fk_cd_entities_cs_entity_types_f_type",
+                        column: x => x.f_type,
+                        principalSchema: "admin",
+                        principalTable: "cs_entity_types",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_cd_users_cd_entities_entityid_entitytypeid",
                         columns: x => new { x.id, x.f_type },
@@ -82,10 +89,10 @@ namespace Infrastructure.Persistence.Migrations
                 column: "f_type");
 
             migrationBuilder.CreateIndex(
-                name: "ix_cd_users_id_f_type",
+                name: "ix_cd_entities_f_type",
                 schema: "admin",
                 table: "cd_users",
-                columns: new[] { "id", "f_type" });
+                column: "f_type");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
