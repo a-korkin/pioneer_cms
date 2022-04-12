@@ -55,23 +55,16 @@ namespace Infrastructure.Persistence.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, comment: "идентификатор"),
-                    f_type = table.Column<Guid>(type: "uuid", nullable: false, comment: "тип сущности"),
                     c_username = table.Column<string>(type: "text", nullable: false, comment: "имя пользователя"),
                     c_password = table.Column<string>(type: "text", nullable: false, comment: "пароль"),
                     c_lastname = table.Column<string>(type: "text", nullable: false, comment: "фамилия"),
                     c_firstname = table.Column<string>(type: "text", nullable: false, comment: "имя"),
-                    c_middlename = table.Column<string>(type: "text", nullable: false, comment: "отчество")
+                    c_middlename = table.Column<string>(type: "text", nullable: false, comment: "отчество"),
+                    f_type = table.Column<Guid>(type: "uuid", nullable: false, comment: "тип сущности")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_cd_entities", x => new { x.id, x.f_type });
-                    table.ForeignKey(
-                        name: "fk_cd_entities_cs_entity_types_f_type",
-                        column: x => x.f_type,
-                        principalSchema: "admin",
-                        principalTable: "cs_entity_types",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("pk_cd_users", x => x.id);
                     table.ForeignKey(
                         name: "fk_cd_users_cd_entities_entityid_entitytypeid",
                         columns: x => new { x.id, x.f_type },
@@ -89,10 +82,10 @@ namespace Infrastructure.Persistence.Migrations
                 column: "f_type");
 
             migrationBuilder.CreateIndex(
-                name: "ix_cd_entities_f_type",
+                name: "ix_cd_users_id_f_type",
                 schema: "admin",
                 table: "cd_users",
-                column: "f_type");
+                columns: new[] { "id", "f_type" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

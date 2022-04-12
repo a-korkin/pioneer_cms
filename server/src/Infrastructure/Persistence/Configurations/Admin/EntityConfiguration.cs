@@ -8,8 +8,8 @@ namespace Infrastructure.Persistence.Configurations.Admin
     {
         public void Configure(EntityTypeBuilder<Entity> builder)
         {
-            builder.HasKey(k => new { k.Id, k.TypeId });
-            
+            builder.HasKey(p => new { p.Id, p.TypeId });
+
             builder
                 .HasOne<EntityType>(p => p.Type)
                 .WithMany()

@@ -30,38 +30,37 @@ CREATE TABLE admin.cd_entities (
     f_type uuid NOT NULL,
     CONSTRAINT pk_cd_entities PRIMARY KEY (id, f_type),
     CONSTRAINT fk_cd_entities_cs_entity_types_f_type FOREIGN KEY (f_type) REFERENCES admin.cs_entity_types (id) ON DELETE CASCADE
-);
+) PARTITION BY (f_type);
 COMMENT ON TABLE admin.cd_entities IS 'сущности';
 COMMENT ON COLUMN admin.cd_entities.id IS 'идентификатор';
 COMMENT ON COLUMN admin.cd_entities.f_type IS 'тип сущности';
 
 CREATE TABLE admin.cd_users (
     id uuid NOT NULL,
-    f_type uuid NOT NULL,
     c_username text NOT NULL,
     c_password text NOT NULL,
     c_lastname text NOT NULL,
     c_firstname text NOT NULL,
     c_middlename text NOT NULL,
-    CONSTRAINT pk_cd_entities PRIMARY KEY (id, f_type),
-    CONSTRAINT fk_cd_entities_cs_entity_types_f_type FOREIGN KEY (f_type) REFERENCES admin.cs_entity_types (id) ON DELETE CASCADE,
+    f_type uuid NOT NULL,
+    CONSTRAINT pk_cd_users PRIMARY KEY (id),
     CONSTRAINT fk_cd_users_cd_entities_entityid_entitytypeid FOREIGN KEY (id, f_type) REFERENCES admin.cd_entities (id, f_type) ON DELETE CASCADE
 );
 COMMENT ON TABLE admin.cd_users IS 'пользователи';
 COMMENT ON COLUMN admin.cd_users.id IS 'идентификатор';
-COMMENT ON COLUMN admin.cd_users.f_type IS 'тип сущности';
 COMMENT ON COLUMN admin.cd_users.c_username IS 'имя пользователя';
 COMMENT ON COLUMN admin.cd_users.c_password IS 'пароль';
 COMMENT ON COLUMN admin.cd_users.c_lastname IS 'фамилия';
 COMMENT ON COLUMN admin.cd_users.c_firstname IS 'имя';
 COMMENT ON COLUMN admin.cd_users.c_middlename IS 'отчество';
+COMMENT ON COLUMN admin.cd_users.f_type IS 'тип сущности';
 
 CREATE INDEX ix_cd_entities_f_type ON admin.cd_entities (f_type);
 
-CREATE INDEX ix_cd_entities_f_type ON admin.cd_users (f_type);
+CREATE INDEX ix_cd_users_id_f_type ON admin.cd_users (id, f_type);
 
 INSERT INTO "__EFMigrationsHistory" (migrationid, productversion)
-VALUES ('20220412040452_InitialMigration', '6.0.3');
+VALUES ('20220412042232_InitialMigration', '6.0.3');
 
 COMMIT;
 

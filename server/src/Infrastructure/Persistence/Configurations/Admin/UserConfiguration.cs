@@ -12,11 +12,6 @@ namespace Infrastructure.Persistence.Configurations.Admin
                 .HasOne<Entity>()
                 .WithMany()
                 .HasForeignKey(p => new { p.Id, p.TypeId });
-            
-            builder
-                .HasOne<EntityType>(p => p.Type)
-                .WithMany()
-                .HasForeignKey(p => p.TypeId);
         }
     }
 }
