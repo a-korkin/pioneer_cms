@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220410155433_InitialMigration")]
+    [Migration("20220412033258_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<Guid>("TypeId")
                         .HasColumnType("uuid")
                         .HasColumnName("f_type")
-                        .HasComment("тип");
+                        .HasComment("тип сущности");
 
                     b.HasKey("Id", "TypeId")
                         .HasName("pk_cd_entities");
@@ -81,6 +81,59 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasComment("типы сущностей");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Admin.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasComment("идентификатор");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("c_firstname")
+                        .HasComment("имя");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("c_lastname")
+                        .HasComment("фамилия");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("c_middlename")
+                        .HasComment("отчество");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("c_password")
+                        .HasComment("пароль");
+
+                    b.Property<Guid>("TypeId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("f_type")
+                        .HasComment("тип сущности");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("c_username")
+                        .HasComment("имя пользователя");
+
+                    b.HasKey("Id")
+                        .HasName("pk_cd_users");
+
+                    b.HasIndex("Id", "TypeId")
+                        .HasDatabaseName("ix_cd_users_id_f_type");
+
+                    b.ToTable("cd_users", "admin");
+
+                    b.HasComment("пользователи");
+                });
+
             modelBuilder.Entity("Domain.Entities.Admin.Entity", b =>
                 {
                     b.HasOne("Domain.Entities.Admin.EntityType", "Type")
@@ -91,6 +144,16 @@ namespace Infrastructure.Persistence.Migrations
                         .HasConstraintName("fk_cd_entities_cs_entity_types_f_type");
 
                     b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Admin.User", b =>
+                {
+                    b.HasOne("Domain.Entities.Admin.Entity", null)
+                        .WithMany()
+                        .HasForeignKey("Id", "TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_cd_users_cd_entities_entityid_entitytypeid");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,10 +10,6 @@ namespace Domain.Entities.Admin
     [Comment("сущности")]
     public class Entity : AuditedEntity
     {
-        [Column("f_type")]
-        [Comment("тип")]
-        [Required]
-        public Guid TypeId { get; set; }
         public EntityType Type { get; set; }
     }
 }

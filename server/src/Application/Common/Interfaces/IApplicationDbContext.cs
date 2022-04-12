@@ -7,5 +7,6 @@ namespace Application.Common.Interfaces
     {
         DbSet<EntityType> EntityTypes { get; }
         DbSet<Entity> Entities { get; }
+        DbSet<User> Users { get; }
     }
 }
