@@ -63,7 +63,7 @@ CREATE INDEX ix_cd_users_f_type ON admin.cd_users (f_type);
 CREATE INDEX ix_cd_users_id_f_type ON admin.cd_users (id, f_type);
 
 INSERT INTO "__EFMigrationsHistory" (migrationid, productversion)
-VALUES ('20220413015417_InitialMigration', '6.0.3');
+VALUES ('20220413022042_InitialMigration', '6.0.3');
 
 COMMIT;
 
