@@ -55,12 +55,12 @@ namespace Infrastructure.Persistence.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false, comment: "идентификатор"),
+                    f_type = table.Column<Guid>(type: "uuid", nullable: false, comment: "тип сущности"),
                     c_username = table.Column<string>(type: "text", nullable: false, comment: "имя пользователя"),
                     c_password = table.Column<string>(type: "text", nullable: false, comment: "пароль"),
                     c_lastname = table.Column<string>(type: "text", nullable: false, comment: "фамилия"),
                     c_firstname = table.Column<string>(type: "text", nullable: false, comment: "имя"),
-                    c_middlename = table.Column<string>(type: "text", nullable: false, comment: "отчество"),
-                    f_type = table.Column<Guid>(type: "uuid", nullable: false, comment: "тип сущности")
+                    c_middlename = table.Column<string>(type: "text", nullable: false, comment: "отчество")
                 },
                 constraints: table =>
                 {
@@ -72,6 +72,13 @@ namespace Infrastructure.Persistence.Migrations
                         principalTable: "cd_entities",
                         principalColumns: new[] { "id", "f_type" },
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_cd_users_cs_entity_types_f_type",
+                        column: x => x.f_type,
+                        principalSchema: "admin",
+                        principalTable: "cs_entity_types",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 },
                 comment: "пользователи");
 
@@ -79,6 +86,12 @@ namespace Infrastructure.Persistence.Migrations
                 name: "ix_cd_entities_f_type",
                 schema: "admin",
                 table: "cd_entities",
+                column: "f_type");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_cd_users_f_type",
+                schema: "admin",
+                table: "cd_users",
                 column: "f_type");
 
             migrationBuilder.CreateIndex(

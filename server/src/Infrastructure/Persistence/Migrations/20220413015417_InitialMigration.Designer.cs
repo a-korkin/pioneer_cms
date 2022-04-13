@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220412042232_InitialMigration")]
+    [Migration("20220413015417_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -126,6 +126,9 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_cd_users");
 
+                    b.HasIndex("TypeId")
+                        .HasDatabaseName("ix_cd_users_f_type");
+
                     b.HasIndex("Id", "TypeId")
                         .HasDatabaseName("ix_cd_users_id_f_type");
 
@@ -148,12 +151,21 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Admin.User", b =>
                 {
+                    b.HasOne("Domain.Entities.Admin.EntityType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_cd_users_cs_entity_types_f_type");
+
                     b.HasOne("Domain.Entities.Admin.Entity", null)
                         .WithMany()
                         .HasForeignKey("Id", "TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_cd_users_cd_entities_entityid_entitytypeid");
+
+                    b.Navigation("Type");
                 });
 #pragma warning restore 612, 618
         }

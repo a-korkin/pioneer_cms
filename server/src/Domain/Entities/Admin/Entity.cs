@@ -8,8 +8,13 @@ namespace Domain.Entities.Admin
 {
     [Description(schema: "admin", name: "cd_entities", title: "сущности")]
     [Comment("сущности")]
-    public class Entity : AuditedEntity
+    public class Entity : BaseEntity
     {
+        [Column("f_type")]
+        [Comment("тип сущности")]
+        [Required]
+        public Guid TypeId { get; set; }
+        
         public EntityType Type { get; set; }
     }
 }
